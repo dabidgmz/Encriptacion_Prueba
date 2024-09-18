@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 //import Hash from '@ioc:Adonis/Core/Hash'
 import crypto from 'crypto'
-
+import ws from 'App/Services/ws';
 const algorithm = 'aes-256-cbc'; // Algoritmo de cifrado
 const key = crypto.randomBytes(32); // Clave de 32 bytes (256 bits)
 const iv = crypto.randomBytes(16);  // Vector de inicialización de 16 bytes
@@ -16,9 +16,18 @@ export default class EncryptionsController {
     
         const encryptedData = iv.toString('hex') + ':' + encrypted
     
+        ws.io.emit('new:encryp')
+            return response.status(201).json({
+            message:"Texto encryotado",
+            originalText: text,
+            encryptedText: encryptedData,
+        })
+
+
         return response.status(200).json({
           originalText: text,
           encryptedText: encryptedData,
+          
         })
       }
 
@@ -33,6 +42,12 @@ export default class EncryptionsController {
     
         return response.status(200).json({
           decryptedText: decrypted,
+        })
+
+        ws.io.emit('new:decrypt')
+            return response.status(201).json({
+            message:"Texto desincriptado",
+            decryptedText: decrypted,
         })
       } 
 
