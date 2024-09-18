@@ -1,55 +1,69 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 //import Hash from '@ioc:Adonis/Core/Hash'
 import crypto from 'crypto'
-import ws from 'App/Services/ws';
+import Ws from 'App/Services/WebSocketService';
 const algorithm = 'aes-256-cbc'; // Algoritmo de cifrado
 const key = crypto.randomBytes(32); // Clave de 32 bytes (256 bits)
 const iv = crypto.randomBytes(16);  // Vector de inicialización de 16 bytes
 
 export default class EncryptionsController {
-    public async encrypt({ request, response }: HttpContextContract) {
-        const { text } = request.only(['text'])
-    
-        const cipher = crypto.createCipheriv(algorithm, key, iv)
-        let encrypted = cipher.update(text, 'utf8', 'hex')
-        encrypted += cipher.final('hex')
-    
-        const encryptedData = iv.toString('hex') + ':' + encrypted
-    
-        ws.io.emit('new:encryp')
-            return response.status(201).json({
-            message:"Texto encryotado",
-            originalText: text,
-            encryptedText: encryptedData,
-        })
+  public async encrypt({ request, response }: HttpContextContract) {
+    try {
+      const { text } = request.only(['text'])
+  
+      const cipher = crypto.createCipheriv(algorithm, key, iv)
+      let encrypted = cipher.update(text, 'utf8', 'hex')
+      encrypted += cipher.final('hex')
+  
+      const encryptedData = iv.toString('hex') + ':' + encrypted
+      Ws.io.emit('new:encryp', {
+        message: "Texto encriptado",
+        originalText: text,
+        encryptedText: encryptedData,
+      });
+      
+      return response.status(200).json({
+        originalText: text,
+        encryptedText: encryptedData,
+      })
+    } catch (error) {
+      console.error('Error durante la encriptación:', error)
+      return response.status(500).json({
+        message: "Ocurrió un error durante la encriptación",
+        error: error.message,
+      })
+    } finally {
+      console.log('Proceso de encriptación completado')
+    }
+  }
+  
 
 
-        return response.status(200).json({
-          originalText: text,
-          encryptedText: encryptedData,
-          
-        })
-      }
-
-      public async decrypt({ request, response }: HttpContextContract) {
-        const { encryptedText } = request.only(['encryptedText'])
+  public async decrypt({ request, response }: HttpContextContract) {
+    try {
+      const { encryptedText } = request.only(['encryptedText'])
+  
+      const [ivHex, encrypted] = encryptedText.split(':')
+      const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(ivHex, 'hex'))
+  
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8')
+      decrypted += decipher.final('utf8')
+  
+      return response.status(200).json({
+        decryptedText: decrypted,
+      })
+    } catch (error) {
+      console.error('Error durante la desencriptación:', error)
+      return response.status(500).json({
+        message: "Ocurrió un error durante la desencriptación",
+        error: error.message,
+      })
+    } finally {
+      console.log('Proceso de desencriptación completado')
+    }
+  }
+  
     
-        const [ivHex, encrypted] = encryptedText.split(':')
-        const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(ivHex, 'hex'))
-    
-        let decrypted = decipher.update(encrypted, 'hex', 'utf8')
-        decrypted += decipher.final('utf8')
-    
-        return response.status(200).json({
-          decryptedText: decrypted,
-        })
-
-        ws.io.emit('new:decrypt')
-            return response.status(201).json({
-            message:"Texto desincriptado",
-            decryptedText: decrypted,
-        })
-      } 
 
 
       /*

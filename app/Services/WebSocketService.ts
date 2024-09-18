@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import AdonisServer from '@ioc:Adonis/Core/Server'
 
-class Ws {
+class WebSocketService {
   public io: Server
   private booted = false
 
@@ -22,4 +22,4 @@ class Ws {
   }
 }
 
-export default new Ws()
+export default new WebSocketService()
