@@ -49,6 +49,11 @@ export default class EncryptionsController {
       let decrypted = decipher.update(encrypted, 'hex', 'utf8')
       decrypted += decipher.final('utf8')
   
+      Ws.io.emit('new:decrypt', {
+        message: "Texto deseencriptado",
+        decryptedText: decrypted,
+      });
+
       return response.status(200).json({
         decryptedText: decrypted,
       })
