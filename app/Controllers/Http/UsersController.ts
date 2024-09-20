@@ -3,57 +3,24 @@
  import Hash from '@ioc:Adonis/Core/Hash'
  import Ws from 'App/Services/WebSocketService';
 export default class UsersController {
-    public async index({response}:HttpContextContract){
-        try {
-            const users = await User.all()
-            return response.status(200).json({
-            message:"Usuarios encontrados :",
-            data:users
-            })
-        }
-
-        catch (error) {
-            return response.status(500).json({
-            message:"Error al buscar usuarios",
-            data:error
-            })
-        }
-
-        finally {
-          console.log('Finally')
-          Ws.io.emit('prueba:emit', 'Prueba')
-        }
+    public async index({response}: HttpContextContract) {
+      try {
+        const users = await User.all()
+        return response.status(200).json({
+          message: "Usuarios encontrados:",
+          data: users
+        })
+      } catch (error) {
+        return response.status(500).json({
+          message: "Error al buscar usuarios",
+          data: error
+        })
+      } finally {
+        console.log('Finally')
+        Ws.io.emit('prueba:emit', 'Prueba')
+      }
     }
-
-
-    public async store({request, response}:HttpContextContract){
-    
-        try {
-            const user = new User()
-            user.name = request.input('name')
-            user.email = request.input('email')
-            user.password = await Hash.make(request.input('password'))
-      
-            await user.save()
-      
-            return response.status(201).json({
-              message: "Usuario creado",
-              data: user
-            })
-        }
-        catch (error) {
-            return response.status(500).json({
-            message:"Error al crear usuario",
-            data:error
-            })
-        }
-
-        finally {
-          console.log('Si entro el socket')
-          Ws.io.emit('prueba:emit', 'Prueba')
-          Ws.io.emit('usuario:llegado', 'usuario ha llegado');
-        }
-    }
+  
 
     public async show({ params, response }: HttpContextContract) {
         try {
