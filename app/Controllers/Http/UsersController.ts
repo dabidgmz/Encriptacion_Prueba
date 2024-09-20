@@ -31,7 +31,6 @@ export default class UsersController {
         try {
             const user = new User()
             user.name = request.input('name')
-            user.lastname = request.input('lastname')
             user.email = request.input('email')
             user.password = await Hash.make(request.input('password'))
       
@@ -75,7 +74,6 @@ export default class UsersController {
         try {
           const user = await User.findOrFail(params.id)
             user.name = request.input('name')
-            user.lastname = request.input('lastname')
             user.email = request.input('email')
             user.password = await Hash.make(request.input('password'))
           await user.save()
