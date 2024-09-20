@@ -23,8 +23,11 @@
   "dependencies": {
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/hash": "^9.0.4",
+    "@adonisjs/lucid": "^18.4.0",
     "@adonisjs/repl": "^3.1.11",
     "bcrypt": "^5.1.1",
+    "luxon": "^3.5.0",
+    "mysql2": "^3.11.3",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.7.5",

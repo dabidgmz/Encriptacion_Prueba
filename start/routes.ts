@@ -26,3 +26,5 @@ Route.get('/', async () => {
 
 Route.post('/encrypt', 'EncryptionsController.encrypt')
 Route.post('/decrypt', 'EncryptionsController.decrypt')
+
+Route.post('/Register_User','UsersController.store')
