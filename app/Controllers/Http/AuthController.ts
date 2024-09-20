@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import Ws from 'App/Services/WebSocketService';
 export default class AuthController {
     public async login({ request, auth, response }: HttpContextContract) {
         try {
@@ -45,11 +46,11 @@ export default class AuthController {
             });
             await user.save();
             const token = await auth.use('api').attempt(email, password);
+            Ws.io.emit('new:user', user)
             return response.status(201).json({
                 message: 'Usuario registrado exitosamente',
                 user,            
                 token,
-    
             });
     
         } catch (error) {
