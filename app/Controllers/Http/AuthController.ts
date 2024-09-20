@@ -6,8 +6,8 @@ export default class AuthController {
             const {email, password} = request.body();
             const token = await auth.use('api').attempt(email, password);
             return response.status(201).json({
-                token,
-                message: 'Usuario logueado exitosamente'
+                message: 'Usuario logueado exitosamente',
+                token
             });
     
         } catch (error) {
@@ -46,9 +46,10 @@ export default class AuthController {
             await user.save();
             const token = await auth.use('api').attempt(email, password);
             return response.status(201).json({
+                message: 'Usuario registrado exitosamente',
+                user,            
                 token,
-                user,
-                message: 'Usuario registrado exitosamente'
+    
             });
     
         } catch (error) {
