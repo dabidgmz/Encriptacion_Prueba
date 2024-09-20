@@ -24,12 +24,11 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
-
+Route.group(() => {
   Route.post('/encrypt', 'EncryptionsController.encrypt')
   Route.post('/decrypt', 'EncryptionsController.decrypt')
-
   Route.post('/Register_User', 'AuthController.register')
   Route.post('/Login_User', 'AuthController.login')
   Route.post('/Logout_User', 'AuthController.logout')
   Route.get('/Get_User', 'UsersController.index')
-
+}).prefix('api')
