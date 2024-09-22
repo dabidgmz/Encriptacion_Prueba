@@ -42,7 +42,6 @@ const iv = crypto.randomBytes(16);  // Vector de inicialización de 16 bytes
 1. Regístrate o inicia sesión con un usuario.
 2. Accede al chat y comienza a enviar mensajes ✉️.
 3. Los mensajes se encriptarán y se transmitirán a través de WebSockets en tiempo real 📡.
-4. Disfruta de la interacción con emojis y colores para una experiencia enriquecida 🎉.
 
 ## Colaboradores 🤝
 
