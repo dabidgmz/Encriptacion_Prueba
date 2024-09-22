@@ -4,7 +4,7 @@ Aquí tienes el README actualizado con emojis en texto plano:
 
 # Encriptacion_Prueba 🔐💻
 
-**Encriptacion_Prueba** es un proyecto desarrollado con **AdonisJS 5** como backend, cuyo objetivo es implementar un sistema de chat virtual con encriptación AES-256-CBC para asegurar la privacidad de los mensajes, además de autenticación de usuarios y registro. Se utilizan **WebSockets**, **API REST**, emojis y colores para mejorar la experiencia del usuario.
+**Encriptacion_Prueba** es un proyecto desarrollado con **AdonisJS 5** como backend, cuyo objetivo es implementar un sistema de chat virtual con encriptación AES-256-CBC para asegurar la privacidad de los mensajes, además de autenticación de usuarios y registro. Se utilizan **WebSockets**, **API REST**,
 
 ## Descripción del Proyecto ✨📝
 
