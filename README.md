@@ -46,6 +46,7 @@ const iv = crypto.randomBytes(16);  // Vector de inicialización de 16 bytes
 
 ## Colaboradores 🤝
 
+- **@David Gomez** - David Gomez [Colaborador](https://github.com/dabidgmz)
 - **@DarioRamosTec** - Darío Ramos [Colaborador](https://github.com/DarioRamosTec)
 - **@ReneArteaga22** - Rene Arteaga [Colaborador](https://github.com/ReneArteaga22) _*Invitación pendiente*_
 - **@RicargoGGx** - RicardoGGx [Colaborador](https://github.com/RicargoGGx)
