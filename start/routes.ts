@@ -26,6 +26,7 @@ Route.get('/', async () => {
 
 Route.group(() => {
   Route.post('/encrypt', 'EncryptionsController.encrypt')
+  Route.post('/second_encrypt', 'EncryptionsController.second_encrypt')
   Route.post('/decrypt', 'EncryptionsController.decrypt')
   Route.post('/Register_User', 'AuthController.register')
   Route.post('/Login_User', 'AuthController.login')

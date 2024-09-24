@@ -38,6 +38,36 @@ export default class EncryptionsController {
   }
   
 
+  public async second_encrypt({ request, response }: HttpContextContract) {
+    try {
+      const { text } = request.only(['text'])
+  
+      const cipher = crypto.createCipheriv(algorithm, key, iv)
+      let encrypted = cipher.update(text, 'utf8', 'hex')
+      encrypted += cipher.final('hex')
+  
+      const encryptedData = iv.toString('hex') + ':' + encrypted
+      Ws.io.emit('new:encrypt_second', {
+        message: "Texto encriptado",
+        originalText: text,
+        encryptedText: encryptedData,
+      });
+      
+      return response.status(200).json({
+        originalText: text,
+        encryptedText: encryptedData,
+      })
+    } catch (error) {
+      console.error('Error durante la encriptación:', error)
+      return response.status(500).json({
+        message: "Ocurrió un error durante la encriptación",
+        error: error.message,
+      })
+    } finally {
+      console.log('Proceso de encriptación completado')
+    }
+  }
+
 
   public async decrypt({ request, response }: HttpContextContract) {
     try {
