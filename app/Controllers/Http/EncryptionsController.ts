@@ -173,6 +173,43 @@ export default class EncryptionsController {
     }
   }
 
+        public async second_encrypt({ request, response }) {
+    try {
+      const { text } = request.only(['text'])
+      const shift = 5  
+      
+      let encryptedText = ''
+      for (let i = 0; i < text.length; i++) {
+        let charCode = text.charCodeAt(i)
+        
+        // Si el carácter está entre los ASCII imprimibles
+        if (charCode >= 32 && charCode <= 126) {
+          charCode = ((charCode - 32 + shift) % 95) + 32
+        }
+        
+        encryptedText += String.fromCharCode(charCode)
+      }
+
+      Ws.io.emit('new:encrypt_second', {
+        message: "Texto encriptado",
+        originalText: text,
+        encryptedText: encryptedText,
+      });
+
+      return response.status(200).json({
+        originalText: text,
+        encryptedText: encryptedText,
+      })
+    } catch (error) {
+      console.error('Error durante la encriptación:', error)
+      return response.status(500).json({
+        message: "Ocurrió un error durante la encriptación",
+        error: error.message,
+      })
+    }
+  }
+
+
   public async decrypt({ request, response }) {
     try {
       const { encryptedText } = request.only(['encryptedText'])
