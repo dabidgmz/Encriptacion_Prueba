@@ -15,6 +15,12 @@ export default class User extends BaseModel {
   @column()
   public password: string
 
+
+  @column()
+  public confirmationCode: string | null 
+
+  @column()
+  public isConfirmed: boolean 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
