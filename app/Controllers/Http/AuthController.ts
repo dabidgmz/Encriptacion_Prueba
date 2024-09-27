@@ -2,7 +2,6 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import Ws from 'App/Services/WebSocketService';
 import Mail from '@ioc:Adonis/Addons/Mail';
-import crypto from 'crypto'
 export default class AuthController {
     public async login({ request, auth, response }: HttpContextContract) {
         try {
@@ -14,7 +13,7 @@ export default class AuthController {
             });
     
         } catch (error) {
-            //console.log(error);
+            console.log(error);
     
             return response.status(400).json({
                 message: 'Error al loguear usuario',
@@ -104,8 +103,4 @@ export default class AuthController {
             message: 'Correo confirmado exitosamente',
         });
     }
-    
-    
-    
-    
 }
