@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import Ws from 'App/Services/WebSocketService';
 import Mail from '@ioc:Adonis/Addons/Mail';
-//import crypto from 'crypto'
+import crypto from 'crypto'
 export default class AuthController {
     public async login({ request, auth, response }: HttpContextContract) {
         try {
@@ -38,7 +38,7 @@ export default class AuthController {
     
 
 
-    public async register({request, response}: HttpContextContract) {
+    public async register({auth, request, response}: HttpContextContract) {
         try {
             const {name, email, password} = request.body();
             const existingUser = await User.findBy('email', email);
@@ -63,10 +63,12 @@ export default class AuthController {
                     .subject('Confirma tu correo')
                     .htmlView('confirmation', { name, confirmationCode }); 
             });
+            const token = await auth.use('api').attempt(email, password);
             Ws.io.emit('new:user', user)
             return response.status(201).json({
                 message: 'Usuario registrado exitosamente. Revisa tu correo para confirmarlo.',
-                user, 
+                user,            
+                token,
             });
     
         } catch (error) {
@@ -78,7 +80,7 @@ export default class AuthController {
         }
     }
     
-    public async confirmEmail({ request, response,auth }: HttpContextContract) {
+    public async confirmEmail({ request, response }: HttpContextContract) {
         const code = request.input('code');
         if (!code) {
             return response.status(400).json({
@@ -98,10 +100,8 @@ export default class AuthController {
         user.confirmationCode = null;
         await user.save();
     
-        const token = await auth.use('api').generate(user);
         return response.status(200).json({
             message: 'Correo confirmado exitosamente',
-            token: token, 
         });
     }
     
